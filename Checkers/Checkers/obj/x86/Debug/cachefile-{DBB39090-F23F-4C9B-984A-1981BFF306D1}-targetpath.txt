@@ -1,0 +1,3 @@
+Content\Board\board8x8.xnb
+Content\Pieces\CheckerPieceBlack.xnb
+Content\Pieces\CheckerPieceRed.xnb

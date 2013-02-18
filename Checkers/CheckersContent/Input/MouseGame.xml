@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Mouse control for playing actual levels -->
+<Mouse>
+  <Map Action="Left" Key="LEFT"></Map>
+  <Map Action="Right" Key="RIGHT"></Map>
+</Mouse>

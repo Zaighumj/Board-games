@@ -1,0 +1,11 @@
+C:\Projects\BoardGames\Checkers\Checkers\bin\x86\Debug\Checkers.exe
+C:\Projects\BoardGames\Checkers\Checkers\bin\x86\Debug\Checkers.pdb
+C:\Projects\BoardGames\Checkers\Checkers\bin\x86\Debug\AdamXNALibrary.dll
+C:\Projects\BoardGames\Checkers\Checkers\bin\x86\Debug\AdamXNALibrary.pdb
+C:\Projects\BoardGames\Checkers\Checkers\obj\x86\Debug\Checkers.csprojResolveAssemblyReference.cache
+C:\Projects\BoardGames\Checkers\Checkers\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Projects\BoardGames\Checkers\Checkers\obj\x86\Debug\Checkers.exe
+C:\Projects\BoardGames\Checkers\Checkers\obj\x86\Debug\Checkers.pdb
+C:\Projects\BoardGames\Checkers\Checkers\bin\x86\Debug\Content\Board\board8x8.xnb
+C:\Projects\BoardGames\Checkers\Checkers\bin\x86\Debug\Content\Pieces\CheckerPieceBlack.xnb
+C:\Projects\BoardGames\Checkers\Checkers\bin\x86\Debug\Content\Pieces\CheckerPieceRed.xnb

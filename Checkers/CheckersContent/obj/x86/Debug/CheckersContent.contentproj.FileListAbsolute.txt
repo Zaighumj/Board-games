@@ -1,0 +1,1 @@
+C:\Projects\BoardGames\Checkers\CheckersContent\obj\x86\Debug\CheckersContent.contentprojResolveAssemblyReference.cache
