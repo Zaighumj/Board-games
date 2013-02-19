@@ -52,18 +52,14 @@ namespace Checkers.Pieces
                 }
             }
             int[] indices = { 0, 1, 3, 0, 3, 2 };
-            StaticMesh<VertexPositionTexture>.VertexDeclaration = VertexPositionTexture.VertexDeclaration;
-            StaticMesh = new StaticMesh<VertexPositionTexture>(contentManager, textureName, vertices, indices);
+            StaticMesh = new StaticMeshTexture(contentManager, textureName, vertices, indices);
         }
 
         public void Draw(GameTime gameTime)
         {
-            // Draw static mesh
             if (Alive == true)
             {
-                StaticMesh.EnableTexture();
                 StaticMesh.Draw(gameTime);
-                StaticMesh.DisableTexture();
             }
         }
 

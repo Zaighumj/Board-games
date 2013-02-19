@@ -13,12 +13,19 @@ using AdamXNALibrary.Visual;
 using Checkers.Pieces;
 
 namespace Checkers.Boards
-{ 
+{
+    public struct GridPiece
+    {
+        public CheckerPiece CheckerPiece;
+        public bool HighLighted;
+    }
+
     public class CheckerBoard:IVisualElement
     {
-        public CheckerPiece[,] Grid = new CheckerPiece[8, 8];
+        public GridPiece[,] Grid = new GridPiece[8, 8];
         public StaticMesh<VertexPositionTexture> StaticMesh;
         private string textureName;
+        public StaticMesh<VertexPositionColor> GridStaticMesh;
 
         public CheckerBoard(string textureName)
         {
@@ -31,9 +38,24 @@ namespace Checkers.Boards
             {
                 for (int j = 0; j < 8; ++j)
                 {
-                    Grid[i, j] = null;
+                    GridPiece gridPiece = new GridPiece();
+                    gridPiece.HighLighted = false;
+                    gridPiece.CheckerPiece = null;
+                    Grid[i, j] = gridPiece; 
                 }
             }
+
+            int[] indices = { 0, 1, 3, 0, 3, 2 };
+
+            VertexPositionColor[] gridVertices = new VertexPositionColor[4];
+            for (int k = 0; k < 2; ++k)
+            {
+                for (int m = 0; m < 2; ++m)
+                {
+                    gridVertices[General.GetIndex(k, m, 2)] = new VertexPositionColor(new Vector3(-0.5f + k, -0.5f + m, 0), new Color(0, 0, 128, 256));
+                }
+            }
+            GridStaticMesh = new StaticMeshColor(gridVertices, indices);
 
             // Load the static mesh
             VertexPositionTexture[] vertices=new VertexPositionTexture[4];
@@ -44,16 +66,23 @@ namespace Checkers.Boards
                     vertices[General.GetIndex(i, j, 2)] = new VertexPositionTexture(new Vector3(8*i-4, 8*j-4, 0), new Vector2(i, 1-j));
                 }
             }
-            int[] indices={0, 1, 3, 0, 3, 2};
-            StaticMesh<VertexPositionTexture>.VertexDeclaration = VertexPositionTexture.VertexDeclaration;
-            StaticMesh = new StaticMesh<VertexPositionTexture>(contentManager, textureName, vertices, indices);
+            StaticMesh = new StaticMeshTexture(contentManager, textureName, vertices, indices);
         }
 
         public void Draw(GameTime gameTime)
         {
-            StaticMesh.EnableTexture();
             StaticMesh.Draw(gameTime);
-            StaticMesh.DisableTexture();
+
+            for (int i = 0; i < 8; ++i)
+            {
+                for (int j = 0; j < 8; ++j)
+                {
+                    if (Grid[i, j].HighLighted == true)
+                    {
+                        GridStaticMesh.Draw(gameTime);
+                    }
+                }
+            }
         }
 
         public void Update(Microsoft.Xna.Framework.GameTime time)

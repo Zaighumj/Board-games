@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using AdamXNALibrary.Camera;
+using AdamXNALibrary.Miscellaneous;
 using AdamXNALibrary.Visual;
 using AdamXNALibrary.World;
 
@@ -34,13 +35,6 @@ namespace Checkers.Worlds
             checkerBoard = new CheckerBoard(@"Board\board8x8");
         }
 
-        private void SetWVP(StaticMesh<VertexPositionTexture> staticMesh, Matrix worldMatrix)
-        {
-            staticMesh.View = camera.ViewMatrix;
-            staticMesh.Projection = camera.ProjectionMatrix;
-            staticMesh.World = worldMatrix;
-        }
-
         private void SetCheckerPieces(ContentManager contentManager, ref CheckerPlayer checkerPlayer, PIECE_COLOR color, string textureName, int iStart, int iEnd)
         {
             checkerPlayer = new CheckerPlayer(contentManager, color);
@@ -55,7 +49,7 @@ namespace Checkers.Worlds
                     newPiece.Position = new Point(j, i);
                     pieces.Add(newPiece);
                     checkerPlayer.Pieces.Add(piece);
-                    checkerBoard.Grid[j, i] = newPiece;
+                    checkerBoard.Grid[j, i].CheckerPiece = newPiece;
                     checkerPlayer.Pieces.Add(piece);
                 }
             }
@@ -80,14 +74,14 @@ namespace Checkers.Worlds
 
         public override void Draw(GameTime gameTime)
         {
-            SetWVP(checkerBoard.StaticMesh, Matrix.Identity);
+            checkerBoard.StaticMesh.SetWVP(Matrix.Identity, camera.ViewMatrix, camera.ProjectionMatrix);
             checkerBoard.Draw(gameTime);
 
             foreach (CheckerPiece piece in pieces)
             {
                 Point position = piece.Position;
-                Vector3 translate = new Vector3(SetPiecePosition(position.X), SetPiecePosition(position.Y), 0); 
-                SetWVP(piece.StaticMesh, Matrix.CreateTranslation(translate));
+                Vector3 translate = new Vector3(SetPiecePosition(position.X), SetPiecePosition(position.Y), 0);
+                piece.StaticMesh.SetWVP(Matrix.CreateTranslation(translate), camera.ViewMatrix, camera.ProjectionMatrix);
                 piece.Draw(gameTime);
             }
         }
@@ -96,6 +90,11 @@ namespace Checkers.Worlds
         {
             Point mousePoint = currentPlayer.CheckerPlayerController.MouseInput.point;
             return game.GraphicsDevice.Viewport.Unproject(new Vector3(mousePoint.X, mousePoint.Y, zValue), camera.ProjectionMatrix, camera.ViewMatrix, Matrix.Identity);
+        }
+
+        private int Floor(float fValue)
+        {
+            return Convert.ToInt32(Math.Floor(Convert.ToDouble(fValue)));
         }
 
         public override void Update(GameTime time)
@@ -113,6 +112,11 @@ namespace Checkers.Worlds
                 float? distance = ray.Intersects(plane);
                 Vector3 piecePoint = minPoint + direction * Convert.ToSingle(distance);
                 currentPlayer.bDrag = false;
+
+                // Set up highlight
+                piecePoint = new Vector3(Floor(piecePoint.X), Floor(piecePoint.Y), 0) + new Vector3(4, 4, 0);
+                checkerBoard.Grid[Convert.ToInt32(piecePoint.X), Convert.ToInt32(piecePoint.Y)].HighLighted = true;
+                checkerBoard.GridStaticMesh.SetWVP(Matrix.CreateTranslation(new Vector3(piecePoint.X - 3.5f, piecePoint.Y - 3.5f, 0)), camera.ViewMatrix, camera.ProjectionMatrix);
             }
         }
     }
